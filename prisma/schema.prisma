@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Ingridients {
+  id Int @id @default(autoincrement())
+  product String
+
+  connectionIngridientsDishes connectionIngridientsDishes[]
+}
+
+model Category  {
+  id Int @id @default(autoincrement())
+  category String
+
+  dishes Dish[]
+}
+
+model typeOrder {
+  id Int @id @default(autoincrement())
+  type String
+
+  order Order[]
+}
+
+model Branch {
+  id Int @id @default(autoincrement())
+  address String
+
+  chef Chef[]
+  order Order[]
+}
+
+model Promocode {
+  id Int @id @default(autoincrement())
+
+  name String 
+  discount Int 
+
+  order Order[]
+}
+
+model Curier {
+  id Int @id @default(autoincrement())
+
+  name String 
+  surname String 
+  email String 
+  age Int 
+
+  order Order[]
+}
+
+
+
+model Dish {
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  price Int 
+
+  categoryId Int 
+  categories Category @relation(fields: [categoryId], references: [id])
+
+  connectionIngridientsDishes connectionIngridientsDishes[]
+  dishOrderConnection DishOrderConnection[]
+}
+
+
+model Chef {
+  id Int @id @default(autoincrement())
+  name String
+  email String 
+
+  branchId Int 
+  branch Branch @relation(fields: [branchId], references: [id])
+
+  order Order[]
+}
+
+model connectionIngridientsDishes {
+  id Int @id @default(autoincrement())
+
+  ingridientId Int 
+  ingridients Ingridients @relation(fields: [ingridientId], references: [id])
+
+  dishId Int 
+  dishes Dish @relation(fields: [dishId], references: [id])
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+
+  address String
+
+  typeOrderId Int 
+  typeOrder typeOrder @relation(fields: [typeOrderId], references: [id])
+
+  branchId Int
+  branch Branch @relation(fields: [branchId], references: [id])
+
+  promocodeId Int 
+  promocode Promocode @relation(fields: [promocodeId], references: [id])
+
+  chefId Int 
+  chef Chef @relation(fields: [chefId], references: [id])
+
+  curierId Int 
+  curier Curier @relation(fields: [curierId], references: [id])
+
+  dishOrderConnection DishOrderConnection[]
+}
+
+model DishOrderConnection {
+  id Int @id @default(autoincrement())
+
+  dishId Int 
+  dish Dish @relation(fields: [dishId], references: [id])
+
+  orderId Int
+  order Order @relation(fields: [orderId], references: [id])
+}
+
+
+
