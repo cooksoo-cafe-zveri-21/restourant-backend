@@ -18,7 +18,10 @@ import { ConfigService, ConfigurationModule } from './config';
     TypeOrmModule.forRootAsync({
       imports: [ConfigurationModule],
       inject: [ConfigService],
-      useFactory: ({ database }: ConfigService) => database,
+      useFactory: ({ database }: ConfigService) => {
+        console.log(database);
+        return database
+      },
     }),
   ],
 })

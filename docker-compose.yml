@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  dev-db:
+    image: postgres
+    container_name: pg
+    environment:
+      POSTGRES_USER: "dean"
+      POSTGRES_PASSWORD: "dean"
+      POSTGRES_DB: "pg_db"
+    ports:
+      - "5434:5432"

@@ -12,9 +12,10 @@ async function bootstrap() {
     app: { http, host },
     swagger,
     environment,
+    database
   }: ConfigService = app.get<ConfigService>(ConfigService);
 
-  app.enableCors();
+  app.enableCors({});
 
   const config = new DocumentBuilder()
     .setTitle(swagger.info.title)
